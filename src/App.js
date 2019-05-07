@@ -3,14 +3,22 @@ import './App.css';
 import Form from './Form';
 import Forks from './Forks';
 import Pulls from './Pulls';
-const githubApi = "https://api.github.com/users/pkanal/repos";
+const githubApi = "https://api.github.com/users/tantienhime/repos";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      myGithub: {}
+      username: ""
+      // myGithub: []
     };
+  this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(e) {
+    this.setState({
+      username: e.target.value
+    });
   }
 
   // listGithub() {
@@ -19,18 +27,19 @@ class App extends React.Component {
   // Fetch pull requests by username: https://developer.github.com/v3/pulls/#list-pull-requests
   // example https://api.github.com/search/issues?q=author%3Atantienhime+type%3Apr = open
   // Ref: https://stackoverflow.com/questions/17412809/how-to-get-my-pull-requests-from-github-api
-//   componentDidMount() {
-//     fetch(githubApi)
-//       .then(res => res.json())
-//       .then(data => {
-//         const githubResults = data.results;
+  componentDidMount() {
+    fetch(githubApi)
+      .then(res => res.json())
+      .then(data => {
+        const githubResults = data.results;
+        console.log(githubResults);
         
-//       this.setState({
-//         myGithub: githubResults
-//       });
-//   });
-//   console.log(this.state.myGithub);
-// }
+      this.setState({
+        myGithub: githubResults
+      });
+      console.log("componentDidMount");
+  });
+}
   render() {
     return (
       <div>
@@ -39,8 +48,12 @@ class App extends React.Component {
           <h2>by Shanta R. Nathwani - Cohort 7</h2>
         </header>
         Your stuff here
+        <Form 
+          username = {this.state.username}
+          handleChange={this.handleChange} 
+        />
         {/* {this.listGithub()} */}
-        <Form />
+        {/* {console.log(this.state.myGithub)} */}
         <Forks />
         <Pulls />
       </div>

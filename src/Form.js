@@ -1,14 +1,20 @@
 import React, { Component } from "react";
 
 class Form extends Component {
-  render() {
+  render(props) {
     return (
       <div>
         <h3>
-          Please provide the Github username that you would like to search:{" "}
+          Please provide the Github username that you would like to search:
         </h3>
-        <input type="text" />
+        <input
+          type="text"
+          // value={value}
+          onChange={this.props.handleChange}
+          username={this.props.username}
+        />
         <button>Submit</button>
+        <p>Username: {this.props.username}</p>
       </div>
     );
   }
