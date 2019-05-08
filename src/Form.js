@@ -9,7 +9,7 @@ class Form extends Component {
         </h3>
         <input
           type="text"
-          // value={value}
+          value={this.props.value}
           onChange={this.props.handleChange}
           username={this.props.username}
         />

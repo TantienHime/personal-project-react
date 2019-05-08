@@ -22,12 +22,14 @@ class App extends React.Component {
   // This works. Rather than handleChange, might need onSubmit instead. Need both?
   handleChange(e) {
     this.setState({
-      username: e.target.value
+      username: e.target.value //static key 'username'
+      // [e.target.name]: e.target.value // preferable use - dynamic key
     });
   }
 
+  // accepts the username that has been set in the state and passes is to the fetch to retrieve from the API
   handleClick() {
-      this.getGithubUser(this.state.username)
+      this.getGithubUser(this.state.username) // A promise that accepts and passes the username, to return a link
         .then(res => res.json())
         .then(data => this.setState({ profile: data }))
         .catch(err => this.setState({ error: err }));
@@ -38,6 +40,7 @@ class App extends React.Component {
   }
 
   listGithub() {
+    // Currently returns the name of the repos for the given user
     return this.state.myGithub.map(githubObject => <div>{githubObject.name}</div>)
   }
   // Fetch pull requests by username: https://developer.github.com/v3/pulls/#list-pull-requests
@@ -70,7 +73,7 @@ class App extends React.Component {
         </header>
         Please provide the username for which you would like to see results:
         <Form 
-          username = {this.state.username}
+          value = {this.state.value}
           handleChange={this.handleChange}
           handleClick={this.handleClick} 
         />
