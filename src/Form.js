@@ -13,7 +13,7 @@ class Form extends Component {
           onChange={this.props.handleChange}
           username={this.props.username}
         />
-        <button>Submit</button>
+        <button onSubmit={this.props.handleSubmit}>Submit</button>
         <p>Username: {this.props.username}</p>
       </div>
     );
