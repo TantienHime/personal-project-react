@@ -16,6 +16,7 @@ class App extends React.Component {
       myGithub: []
     };
   this.handleChange = this.handleChange.bind(this);
+  this.handleClick = this.handleClick.bind(this);
   }
 
   // This works. Rather than handleChange, might need onSubmit instead. Need both?
@@ -25,8 +26,19 @@ class App extends React.Component {
     });
   }
 
+  handleClick() {
+      this.getGithubUser(this.state.username)
+        .then(res => res.json())
+        .then(data => this.setState({ profile: data }))
+        .catch(err => this.setState({ error: err }));
+  }
+
+  getGithubUser(username) {
+    return fetch('https://api.github.com/users/${username}'); //double check the ${username} part
+  }
+
   listGithub() {
-    return this.state.myGithub.map(githubObject => <div>{githubObject.id}</div>)
+    return this.state.myGithub.map(githubObject => <div>{githubObject.name}</div>)
   }
   // Fetch pull requests by username: https://developer.github.com/v3/pulls/#list-pull-requests
   // example https://api.github.com/search/issues?q=author%3Atantienhime+type%3Apr = open
@@ -56,10 +68,11 @@ class App extends React.Component {
           <h1>Personal Project with React</h1>
           <h2>by Shanta R. Nathwani - Cohort 7</h2>
         </header>
-        Your stuff here
+        Please provide the username for which you would like to see results:
         <Form 
           username = {this.state.username}
-          handleChange={this.handleChange} 
+          handleChange={this.handleChange}
+          handleClick={this.handleClick} 
         />
         {/* List of github repo id's for TantienHime */}
         {this.listGithub()} 
