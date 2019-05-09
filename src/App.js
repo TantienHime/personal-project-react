@@ -19,7 +19,7 @@ class App extends React.Component {
   this.handleClick = this.handleClick.bind(this);
   }
 
-  // This works. Rather than handleChange, might need onSubmit instead. Need both?
+  // This takes the contents of the input and outputs it to the screen.
   handleChange(e) {
     this.setState({
       username: e.target.value //static key 'username'
@@ -34,10 +34,11 @@ class App extends React.Component {
         .then(data => this.setState({ profile: data }))
         .catch(err => this.setState({ error: err }));
   }
-
+/* Not in use yet
   getGithubUser(username) {
     return fetch('https://api.github.com/users/${username}'); //double check the ${username} part
   }
+*/
 
   listGithub() {
     // Currently returns the name of the repos for the given user
@@ -73,9 +74,9 @@ class App extends React.Component {
         </header>
         Please provide the username for which you would like to see results:
         <Form 
-          value = {this.state.value}
           handleChange={this.handleChange}
-          handleClick={this.handleClick} 
+          handleClick={this.handleClick}
+          username = {this.state.username} 
         />
         {/* List of github repo id's for TantienHime */}
         {this.listGithub()} 

@@ -9,9 +9,8 @@ class Form extends Component {
         </h3>
         <input
           type="text"
-          value={this.props.value}
           onChange={this.props.handleChange}
-          username={this.props.username}
+          // username={this.props.username}
         />
         <button onSubmit={this.props.handleSubmit}>Submit</button>
         <p>Username: {this.props.username}</p>
