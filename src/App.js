@@ -3,6 +3,7 @@ import './App.css';
 import Form from './Form';
 import Forks from './Forks';
 import Pulls from './Pulls';
+// import store from './store'
 
 // Currently reads a static version of my own repos. Need to implement the input of a username.
 import { response } from './tantien-repos';
@@ -58,6 +59,8 @@ class App extends React.Component {
       });
   })
   .catch(error => console.log(error));
+
+  // for the thunk one, use the component did mount to call to the store
   
   // This is only meant to be used when the API cannot be reached. Local dev only
   this.setState({
