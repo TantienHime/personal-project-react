@@ -7,7 +7,7 @@ import Pulls from './Pulls';
 
 // Currently reads a static version of my own repos. Need to implement the input of a username.
 // import { response } from './tantien-repos';
-// const githubApi = "https://api.github.com/users/tantienhime/repos";
+const githubApi = "https://api.github.com/users/tantienhime/repos";
 const githubApiPR = "https://api.github.com/search/issues?q=author%3Atantienhime+type%3Apr"
 
 console.log(githubApiPR);
@@ -24,11 +24,10 @@ class App extends React.Component {
   this.handleClick = this.handleClick.bind(this);
   }
 
-  // This takes the contents of the input and outputs it to the screen.
+  // This takes the contents of the input and outputs it to the screen currently.
   handleChange(e) {
     this.setState({
-      username: e.target.value //static key 'username'
-      // [e.target.name]: e.target.value // preferable use - dynamic key
+      [e.target.name]: e.target.value
     });
   }
 
@@ -40,21 +39,17 @@ class App extends React.Component {
         .catch(err => this.setState({ error: err }));
   }
 
-  /*
   listGithub() {
     // Currently returns the name of the repos for the given user
     return this.state.myGithub.map(githubObject => <div>{githubObject.name}</div>)
   }
-  */
-
   
   listGithubPR() {
     // Currently returns the name of the repos for the given user
-    return this.state.myPRs.map(githubObject => <div>{githubObject}</div>)
+    return this.state.myPRs.map(githubObject => <div>{githubObject.items}</div>)
   }
 
   // This is only fetching my own repo
-  /*
   componentDidMount() {
     fetch(githubApi)
     .then(res => res.json())
@@ -66,12 +61,11 @@ class App extends React.Component {
       });
     })
     .catch(error => console.log(error));
-    */
     
         // Fetch pull requests by username: https://developer.github.com/v3/pulls/#list-pull-requests
     // example https://api.github.com/search/issues?q=author%3Atantienhime+type%3Apr = open
     // Ref: https://stackoverflow.com/questions/17412809/how-to-get-my-pull-requests-from-github-api
-  componentDidMount() {
+  // componentDidMount() {
     fetch(githubApiPR)
       .then(res => res.json())
       .then(data => {
@@ -82,7 +76,6 @@ class App extends React.Component {
       });
   })
   .catch(error => console.log(error));
-
     
     // for the thunk one, use the component did mount to call to the store
     
@@ -106,7 +99,8 @@ class App extends React.Component {
           handleClick={this.handleClick}
           username = {this.state.username} 
         />
-        {/* {this.listGithubPR()}  */}
+        {this.listGithub()} 
+        {this.listGithubPR()} 
         {console.log(this.state.myPRs.items)}
         <Forks />
         <Pulls />

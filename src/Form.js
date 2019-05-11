@@ -9,10 +9,14 @@ class Form extends Component {
         </h3>
         <input
           type="text"
+          name="username"
+          label="Github Username"
           onChange={this.props.handleChange}
+          value={this.props.username}
           // username={this.props.username}
         />
         <button onSubmit={this.props.handleSubmit}>Submit</button>
+        {/* Just outputs the username to check acceptance */}
         <p>Username: {this.props.username}</p>
       </div>
     );
