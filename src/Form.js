@@ -15,7 +15,7 @@ class Form extends Component {
           value={this.props.username}
           // username={this.props.username}
         />
-        <button onSubmit={this.props.handleSubmit}>Submit</button>
+        <button onClick={this.props.handleClick}>Submit</button>
         {/* Just outputs the username to check acceptance */}
         <p>Username: {this.props.username}</p>
       </div>
