@@ -1,25 +1,24 @@
-import React from 'react';
-import './App.css';
-import Form from './Form';
-import Forks from './Forks';
-import Pulls from './Pulls';
+import React from "react";
+import "./App.css";
+import Form from "./Form";
+import Forks from "./Forks";
+import Pulls from "./Pulls";
 // import store from './store'
-import { response } from './agentultra-prs';
-const githubApi = (username) => `https://api.github.com/users/${username}/repos`; //variable type 'function'
-const githubApiPR = (username) => `https://api.github.com/search/issues?q=author%3A${username}+type%3Apr`;
-// const githubApiPR = "https://api.github.com/search/issues?q=author%3Atantienhime+type%3Apr"
-// const githubApiSearch = "https://api.github.com/search/issues?q=type%3Apr+author%3A"
+// import { response } from "./agentultra-prs";
+const githubApi = username => `https://api.github.com/users/${username}/repos`; //variable type 'function'
+const githubApiPR = username =>
+  `https://api.github.com/search/issues?q=author%3A${username}+type%3Apr`;
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "agentultra",
+      username: "",
       myGithub: [],
-      myPRs: response
+      myPRs: []
     };
-  this.handleChange = this.handleChange.bind(this);
-  this.handleClick = this.handleClick.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   // This takes the contents of the input and outputs it to the screen currently.
@@ -31,25 +30,19 @@ class App extends React.Component {
 
   // accepts the username that has been set in the state and passes is to the fetch to retrieve from the API for FORKS
   handleClick() {
-    
-      fetch(githubApi(this.state.username)) //calls immediately
+    fetch(githubApi(this.state.username)) //calls immediately
       .then(res => res.json())
       .then(data => {
         const githubResults = data;
-        this.setState({
-          myGithub: githubResults
-        });
-      })
-      .catch(error => console.log(error));
-
-      fetch(githubApiPR(this.state.username))
-      .then(res => res.json())
-      .then(data => {
-        const githubResultsPR = data;
-        // console.log(githubResultsPR.items[0].title);
-        this.setState({
-          myPRs: githubResultsPR
-        });
+        fetch(githubApiPR(this.state.username))
+          .then(resPR => resPR.json())
+          .then(dataPR => {
+            const githubResultsPR = dataPR;
+            this.setState({
+              myGithub: githubResults,
+              myPRs: githubResultsPR.items
+            });
+          });
       })
       .catch(error => console.log(error));
   }
@@ -58,24 +51,25 @@ class App extends React.Component {
     // Currently returns the name of the repos for the given user
     return this.state.myGithub
       .filter(githubObject => githubObject.fork === true)
-      .map(githubObject => <div><a href={githubObject.html_url}>{githubObject.name}</a></div>)
+      .map(githubObject => (
+        <div>
+          <a href={githubObject.html_url}>{githubObject.name}</a>
+        </div>
+      ));
   }
-  
-  listGithubPR() {
-    // Currently returns the prs for the given user
-    console.log(this.state.myPRs);    
-    /**
-    * ! Need to fix this call. It appears to take some time to come back. Currently pulling from a file.
-    */
-    return this.state.myPRs.items
-      .map(githubPR => <div><a href={githubPR.html_url}>{githubPR.title}</a></div>)
-  }
-    
-    // Fetch pull requests by username: https://developer.github.com/v3/pulls/#list-pull-requests
-    // example https://api.github.com/search/issues?q=author%3Atantienhime+type%3Apr = open
-    // Ref: https://stackoverflow.com/questions/17412809/how-to-get-my-pull-requests-from-github-api
 
-    // This is only meant to be used when the API cannot be reached. Local dev only
+  listGithubPR() {
+    return this.state.myPRs.map(githubPR => (
+      <div>
+        <p>
+          <a href={githubPR.html_url}>{githubPR.title}</a> Status:{" "}
+          {githubPR.state}
+        </p>
+      </div>
+    ));
+  }
+
+  // This is only meant to be used when the API cannot be reached. Local dev only
   /*  
     this.setState({
       myGithub: response
@@ -91,15 +85,15 @@ class App extends React.Component {
           <h2>by Shanta R. Nathwani - Cohort 7</h2>
         </header>
         Please provide the username for which you would like to see results:
-        <Form 
+        <Form
           handleChange={this.handleChange}
           handleClick={this.handleClick}
-          username = {this.state.username} 
+          username={this.state.username}
         />
         <Forks />
-        {this.listGithub()} 
+        {this.listGithub()}
         <Pulls />
-        {this.listGithubPR()} 
+        {this.listGithubPR()}
       </div>
     );
   }
