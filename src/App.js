@@ -27,6 +27,13 @@ class App extends React.Component {
       [e.target.name]: e.target.value
     });
   }
+  // sortDate(){
+  //   array.sort(function(a, b) {
+  //     a = new Date(a.created_at);
+  //     b = new Date(b.created_at);
+  //     return a>b ? -1 : a<b ? 1 : 0;
+  // });
+  // }
 
   // accepts the username that has been set in the state and passes is to the fetch to retrieve from the API for FORKS
   handleClick() {
@@ -52,20 +59,19 @@ class App extends React.Component {
     return this.state.myGithub
       .filter(githubObject => githubObject.fork === true)
       .map(githubObject => (
-        <div>
-          <a href={githubObject.html_url}>{githubObject.name}</a>
-        </div>
+        <a key={githubObject.id} href={githubObject.html_url}>
+          {githubObject.name}
+        </a>
       ));
   }
 
   listGithubPR() {
     return this.state.myPRs.map(githubPR => (
-      <div>
-        <p>
-          <a href={githubPR.html_url}>{githubPR.title}</a> Status:{" "}
-          {githubPR.state}
-        </p>
-      </div>
+      <p key={githubPR.id}>
+        {/* This won't work. I'm pulling .items and the id is in the parent */}
+        <a href={githubPR.html_url}>{githubPR.title}</a> Status:{" "}
+        {githubPR.state}
+      </p>
     ));
   }
 
