@@ -19,6 +19,7 @@ class App extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.sortDate = this.sortDate.bind(this);
   }
 
   // This takes the contents of the input and outputs it to the screen currently.
@@ -27,13 +28,14 @@ class App extends React.Component {
       [e.target.name]: e.target.value
     });
   }
-  // sortDate(){
-  //   array.sort(function(a, b) {
-  //     a = new Date(a.created_at);
-  //     b = new Date(b.created_at);
-  //     return a>b ? -1 : a<b ? 1 : 0;
-  // });
-  // }
+
+  sortDate(array) {
+    array.sort(function(a, b) {
+      a = new Date(a.created_at);
+      b = new Date(b.created_at);
+      return a > b ? -1 : a < b ? 1 : 0;
+    });
+  }
 
   // accepts the username that has been set in the state and passes is to the fetch to retrieve from the API for FORKS
   handleClick() {
@@ -55,22 +57,23 @@ class App extends React.Component {
   }
 
   listGithub() {
-    // Currently returns the name of the repos for the given user
+    this.sortDate(this.state.myGithub);
     return this.state.myGithub
       .filter(githubObject => githubObject.fork === true)
       .map(githubObject => (
-        <a key={githubObject.id} href={githubObject.html_url}>
-          {githubObject.name}
-        </a>
+        <p key={githubObject.id}>
+          <a href={githubObject.html_url}>{githubObject.name}</a> Date:{" "}
+          {githubObject.created_at}
+        </p>
       ));
   }
 
   listGithubPR() {
+    this.sortDate(this.state.myGithub);
     return this.state.myPRs.map(githubPR => (
       <p key={githubPR.id}>
-        {/* This won't work. I'm pulling .items and the id is in the parent */}
         <a href={githubPR.html_url}>{githubPR.title}</a> Status:{" "}
-        {githubPR.state}
+        {githubPR.state} Date: {githubPR.created_at}
       </p>
     ));
   }
